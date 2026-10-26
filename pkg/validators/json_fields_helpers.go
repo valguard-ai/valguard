@@ -1,5 +1,3 @@
-//go:build osspublic
-
 package validators
 
 import "context"

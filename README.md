@@ -49,7 +49,7 @@ make oss-phase-c-gate          # from repo root
 make oss-sync-conformance-fixtures
 ```
 
-Public release binaries are built with `-tags=osspublic` (40 rules). Monorepo builds include the full catalog for proxy parity.
+The **GitHub mirror** is filtered on sync (`scripts/oss-public-filter.sh`): only **~40 MVP** validator sources are published. The monorepo `oss/valguard/` tree still contains the full catalog for hosted proxy builds.
 
 ## Telemetry
 

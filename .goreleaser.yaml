@@ -10,7 +10,6 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
-    tags: [osspublic]
     ldflags:
       - -s -w
       - -X github.com/valguard-ai/valguard/pkg/version.Version={{.Version}}
