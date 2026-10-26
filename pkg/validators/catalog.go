@@ -41,6 +41,11 @@ func LoadCatalog(paths ...string) (Catalog, error) {
 }
 
 func DefaultCatalogPaths() []string {
+	// Standalone github.com/valguard-ai/valguard root ships catalog/oss-mvp.yaml.
+	paths := []string{
+		"catalog/oss-mvp.yaml",
+		"../../catalog/oss-mvp.yaml",
+	}
 	prefixes := []string{
 		"../../../../config/",
 		"../../../config/",
@@ -52,7 +57,6 @@ func DefaultCatalogPaths() []string {
 		"validators.extended.yaml",
 		"validators.phase_b.yaml",
 	}
-	var paths []string
 	for _, p := range prefixes {
 		for _, f := range files {
 			paths = append(paths, p+f)

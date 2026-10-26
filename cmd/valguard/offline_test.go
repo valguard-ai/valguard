@@ -13,9 +13,9 @@ import (
 
 // Bramka C: offline CLI must not link net/http (no outbound client in the binary).
 func TestValguardCLINoHTTPDependency(t *testing.T) {
-	ossDir := filepath.Join(repoRoot(t), "oss", "valguard")
+	modRoot := moduleRoot(t)
 	cmd := exec.Command("go", "list", "-deps", "./cmd/valguard")
-	cmd.Dir = ossDir
+	cmd.Dir = modRoot
 	cmd.Env = append(os.Environ(), "GOFLAGS=-buildvcs=false")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
@@ -30,8 +30,11 @@ func TestValguardCLINoHTTPDependency(t *testing.T) {
 
 func TestValguardCLI_offlineSmoke(t *testing.T) {
 	bin := buildValguard(t)
-	root := repoRoot(t)
-	fixDir := filepath.Join(root, "conformance", "fixtures")
+	modRoot := moduleRoot(t)
+	fixDir := filepath.Join(modRoot, "conformance", "fixtures")
+	if _, err := os.Stat(fixDir); err != nil {
+		fixDir = filepath.Join(repoRoot(t), "conformance", "fixtures")
+	}
 	if _, err := os.Stat(fixDir); err != nil {
 		t.Skip("conformance/fixtures not found")
 	}
@@ -47,7 +50,7 @@ func TestValguardCLI_offlineSmoke(t *testing.T) {
 		t.Helper()
 		cmd := exec.Command(bin, args...)
 		cmd.Env = env
-		cmd.Dir = root
+		cmd.Dir = modRoot
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			t.Fatalf("%v: %s", args, out)
@@ -69,17 +72,37 @@ func TestValguardCLI_offlineSmoke(t *testing.T) {
 
 func buildValguard(t *testing.T) string {
 	t.Helper()
-	ossDir := filepath.Join(repoRoot(t), "oss", "valguard")
+	modRoot := moduleRoot(t)
 	dir := t.TempDir()
 	bin := filepath.Join(dir, "valguard")
 	build := exec.Command("go", "build", "-buildvcs=false", "-o", bin, "./cmd/valguard")
-	build.Dir = ossDir
+	build.Dir = modRoot
 	build.Env = append(os.Environ(), "GOFLAGS=-buildvcs=false")
 	out, err := build.CombinedOutput()
 	if err != nil {
 		t.Fatalf("build: %v\n%s", err, out)
 	}
 	return bin
+}
+
+// moduleRoot is the directory containing go.mod (standalone OSS repo or oss/valguard in monorepo).
+func moduleRoot(t *testing.T) string {
+	t.Helper()
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("caller")
+	}
+	dir := filepath.Dir(file)
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			t.Fatal("go.mod not found")
+		}
+		dir = parent
+	}
 }
 
 func repoRoot(t *testing.T) string {

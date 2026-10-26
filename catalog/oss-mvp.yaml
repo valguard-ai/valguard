@@ -1,0 +1,124 @@
+validators:
+- name: valid_format
+  description: Checks whether the output is valid in the selected format (JSON, YAML, XML, TOML, CSV).
+  category: ''
+- name: json_schema_validate
+  description: JSON Schema validation beyond required fields and types.
+  category: structure
+- name: required_fields
+  description: Ensures that all required JSON fields are present.
+  category: ''
+- name: type_checking
+  description: Validates that JSON fields match expected data types.
+  category: ''
+- name: enum_validator
+  description: Ensures that field values belong to predefined enumerations.
+  category: ''
+- name: json_no_extra_fields
+  description: Rejects JSON with fields not allowed by schema (additionalProperties false).
+  category: ''
+- name: no_duplicate_json_keys
+  description: Rejects top-level JSON objects with duplicate keys.
+  category: ''
+- name: json_max_depth
+  description: Blocks JSON output exceeding configured nesting depth.
+  category: ''
+- name: list_length
+  description: Validates minimum and maximum list length for JSON arrays.
+  category: ''
+- name: output_shape
+  description: 'Ensures output matches required shape: JSON, list, table, markdown.'
+  category: ''
+- name: regex_pattern
+  description: Ensures output matches required regex patterns.
+  category: ''
+- name: forbidden_patterns
+  description: Blocks output containing forbidden words or patterns.
+  category: ''
+- name: max_length
+  description: Ensures the output does not exceed maximum character length.
+  category: ''
+- name: min_length
+  description: Ensures the output meets minimum character length.
+  category: ''
+- name: no_markdown_fenced_wrapper
+  description: Blocks markdown code fences or headings wrapping the response.
+  category: ''
+- name: code_block_balanced
+  description: Ensures fenced code blocks (```) are opened and closed.
+  category: ''
+- name: no_placeholder_text
+  description: Blocks placeholder tokens ([TBD], ?, unknown, N/A) in final structured output.
+  category: ''
+- name: no_truncation_markers
+  description: Blocks truncation markers indicating incomplete generation.
+  category: ''
+- name: range_validator
+  description: Ensures numeric values fall within defined ranges.
+  category: ''
+- name: numeric_consistency
+  description: Checks that numeric fields are internally consistent.
+  category: ''
+- name: line_item_math_valid
+  description: Validates quantity × unit price equals line total within tolerance.
+  category: ''
+- name: cross_field_logic
+  description: Validates logical relations between fields (if A > X then B must be Y).
+  category: ''
+- name: decimal_precision_max
+  description: Limits maximum decimal places for numeric fields.
+  category: ''
+- name: non_negative
+  description: Ensures numeric fields are zero or positive.
+  category: ''
+- name: amount_requires_currency
+  description: When amount fields are present, requires a valid ISO 4217 currency code.
+  category: ''
+- name: pii_detection
+  description: Detects personal identifiable information (PII).
+  category: ''
+- name: pii_pesel
+  description: Detects Polish PESEL numbers in output.
+  category: ''
+- name: pii_nip
+  description: Detects Polish NIP (tax ID) numbers in output.
+  category: ''
+- name: pii_ssn_us
+  description: Detects US Social Security Number patterns in output.
+  category: ''
+- name: valid_iban
+  description: Validates IBAN checksum and format for specified fields.
+  category: ''
+- name: valid_credit_card_luhn
+  description: Validates credit card numbers using Luhn algorithm on fields.
+  category: ''
+- name: masked_card_only
+  description: Allows masked card displays only; blocks full PAN digits.
+  category: ''
+- name: valid_email_rfc5322
+  description: Validates email addresses against RFC 5322 simplified rules.
+  category: ''
+- name: secrets_detection
+  description: Detects hardcoded secrets (API keys, tokens, passwords) in output.
+  category: ''
+- name: no_system_prompt_leakage
+  description: Detects fragments of system prompt or instruction block in output.
+  category: ''
+- name: no_role_marker_leakage
+  description: Blocks role markers (User:, Assistant:, Human:) leaking into content.
+  category: ''
+- name: no_thinking_tag_leakage
+  description: Blocks leaked chain-of-thought or thinking tags in final output.
+  category: ''
+- name: no_stack_trace_leak
+  description: Blocks stack traces and internal debug paths in user-facing output.
+  category: ''
+- name: prompt_injection
+  description: Detects prompt injection attempts (e.g., ignore previous instructions).
+  category: ''
+- name: internal_network_url
+  description: Blocks URLs pointing to internal or private network ranges.
+  category: ''
+- name: pure
+  description: OSS MVP rule pure
+  category: mvp
