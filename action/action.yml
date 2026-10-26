@@ -1,0 +1,44 @@
+name: ValGuard check
+description: Run offline valguard check on agent output (40 MVP rules, YAML policy).
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  version:
+    description: ValGuard release tag (e.g. v0.1.0)
+    required: false
+    default: v0.1.0
+  policy-file:
+    description: Path to valguard.yaml policy file
+    required: true
+  output-file:
+    description: Path to model output (text or JSON file)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install ValGuard from GitHub Release
+      shell: bash
+      run: |
+        set -euo pipefail
+        TAG="${{ inputs.version }}"
+        VER="${TAG#v}"
+        OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+        ARCH="$(uname -m)"
+        case "$ARCH" in
+          x86_64) ARCH=amd64 ;;
+          aarch64|arm64) ARCH=arm64 ;;
+          *) echo "unsupported arch $ARCH"; exit 1 ;;
+        esac
+        case "$OS" in
+          darwin) ;;
+          linux) ;;
+          *) echo "unsupported OS $OS"; exit 1 ;;
+        esac
+        ASSET="valguard_${VER}_${OS}_${ARCH}.tar.gz"
+        URL="https://github.com/valguard-ai/valguard/releases/download/${TAG}/${ASSET}"
+        curl -fsSL "$URL" | tar -xz
+        chmod +x valguard
+        ./valguard check --policy "${{ inputs.policy-file }}" --file "${{ inputs.output-file }}"
