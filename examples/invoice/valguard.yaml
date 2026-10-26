@@ -1,0 +1,16 @@
+version: 1
+name: invoice_agent
+mode: enforce
+rules:
+  - id: valid_format
+    params:
+      format: json
+    on_fail: block
+  - id: required_fields
+    params:
+      fields: ["total", "currency"]
+    on_fail: block
+  - id: non_negative
+    params:
+      fields: ["total"]
+    on_fail: block

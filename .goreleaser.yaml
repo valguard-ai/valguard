@@ -1,0 +1,25 @@
+# Public OSS CLI releases (40 MVP rules). Run from oss/valguard/ root on tag push.
+version: 2
+project_name: valguard
+builds:
+  - id: valguard
+    main: ./cmd/valguard
+    binary: valguard
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ignore:
+      - goos: windows
+        goarch: arm64
+    tags: [osspublic]
+    ldflags:
+      - -s -w
+      - -X github.com/valguard-ai/valguard/pkg/version.Version={{.Version}}
+archives:
+  - formats: [tar.gz, zip]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+checksum:
+  name_template: checksums.txt
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc

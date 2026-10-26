@@ -1,0 +1,22 @@
+{
+  "name": "invalid json fails valid_format",
+  "policy": {
+    "version": 1,
+    "name": "fmt",
+    "mode": "enforce",
+    "rules": [
+      {
+        "id": "valid_format",
+        "params": {
+          "format": "json"
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "not json",
+  "input_text": "",
+  "expect_blocked": true,
+  "expect_would_enforce": true,
+  "expect_failed_rules": ["valid_format"]
+}

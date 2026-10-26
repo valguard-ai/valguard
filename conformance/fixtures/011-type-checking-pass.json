@@ -1,0 +1,31 @@
+{
+  "name": "type_checking pass matching types",
+  "policy": {
+    "version": 1,
+    "name": "types",
+    "mode": "enforce",
+    "rules": [
+      {
+        "id": "valid_format",
+        "params": {
+          "format": "json"
+        },
+        "on_fail": "block"
+      },
+      {
+        "id": "type_checking",
+        "params": {
+          "types": {
+            "email": "string"
+          }
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "{\"email\":\"a@b.co\"}",
+  "input_text": "",
+  "expect_blocked": false,
+  "expect_would_enforce": false,
+  "expect_failed_rules": []
+}

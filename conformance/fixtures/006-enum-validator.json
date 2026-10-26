@@ -1,0 +1,35 @@
+{
+  "name": "enum_validator rejects unknown status",
+  "policy": {
+    "version": 1,
+    "name": "enum",
+    "mode": "enforce",
+    "rules": [
+      {
+        "id": "valid_format",
+        "params": {
+          "format": "json"
+        },
+        "on_fail": "block"
+      },
+      {
+        "id": "enum_validator",
+        "params": {
+          "enums": {
+            "status": [
+              "ok"
+            ]
+          }
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "{\"status\":\"bad\"}",
+  "input_text": "",
+  "expect_blocked": true,
+  "expect_would_enforce": true,
+  "expect_failed_rules": [
+    "enum_validator"
+  ]
+}

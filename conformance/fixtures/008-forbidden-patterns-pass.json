@@ -1,0 +1,24 @@
+{
+  "name": "forbidden_patterns pass clean text",
+  "policy": {
+    "version": 1,
+    "name": "pat",
+    "mode": "enforce",
+    "rules": [
+      {
+        "id": "forbidden_patterns",
+        "params": {
+          "patterns": [
+            "SECRET"
+          ]
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "all clear",
+  "input_text": "",
+  "expect_blocked": false,
+  "expect_would_enforce": false,
+  "expect_failed_rules": []
+}

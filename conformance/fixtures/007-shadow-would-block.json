@@ -1,0 +1,26 @@
+{
+  "name": "shadow mode reports would enforce without blocking",
+  "policy": {
+    "version": 1,
+    "name": "shadow",
+    "mode": "shadow",
+    "rules": [
+      {
+        "id": "forbidden_patterns",
+        "params": {
+          "patterns": [
+            "SECRET"
+          ]
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "leaked SECRET value",
+  "input_text": "",
+  "expect_blocked": true,
+  "expect_would_enforce": true,
+  "expect_failed_rules": [
+    "forbidden_patterns"
+  ]
+}

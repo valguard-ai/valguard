@@ -1,0 +1,26 @@
+# Runs when this tree is the root of github.com/valguard-ai/valguard.
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+          cache-dependency-path: go.sum
+      - name: Unit tests (full module)
+        run: go test -race -count=1 ./...
+      - name: Unit tests (osspublic / 40 MVP)
+        run: go test -tags=osspublic -race -count=1 ./...
+      - name: Offline fixture suite
+        run: go run ./cmd/valguard test --dir conformance/fixtures
+      - name: Fuzz smoke (C7)
+        run: go test -fuzz=FuzzParseRecord -fuzztime=15s ./pkg/evidence/ -count=1
+      - name: Module verify
+        run: go mod verify

@@ -1,0 +1,31 @@
+{
+  "name": "non_negative rejects negative amount field",
+  "policy": {
+    "version": 1,
+    "name": "num",
+    "mode": "enforce",
+    "rules": [
+      {
+        "id": "valid_format",
+        "params": {
+          "format": "json"
+        },
+        "on_fail": "block"
+      },
+      {
+        "id": "non_negative",
+        "params": {
+          "fields": [
+            "amount"
+          ]
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "{\"amount\":-1}",
+  "input_text": "",
+  "expect_blocked": true,
+  "expect_would_enforce": true,
+  "expect_failed_rules": ["non_negative"]
+}

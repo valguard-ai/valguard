@@ -1,0 +1,12 @@
+version: 1
+name: json_shape
+mode: enforce
+rules:
+  - id: valid_format
+    params:
+      format: json
+    on_fail: block
+  - id: required_fields
+    params:
+      fields: ["status"]
+    on_fail: block

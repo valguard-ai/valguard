@@ -1,0 +1,22 @@
+{
+  "name": "max_length blocks long output",
+  "policy": {
+    "version": 1,
+    "name": "len",
+    "mode": "enforce",
+    "rules": [
+      {
+        "id": "max_length",
+        "params": {
+          "max_chars": 5
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "1234567890",
+  "input_text": "",
+  "expect_blocked": true,
+  "expect_would_enforce": true,
+  "expect_failed_rules": ["max_length"]
+}

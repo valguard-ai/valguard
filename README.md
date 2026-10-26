@@ -1,20 +1,60 @@
-# ValGuard OSS module (Phase C staging)
+# ValGuard — open-source validation CLI
 
-Public module path: **`github.com/valguard-ai/valguard`** (separate GitHub repo at launch, Apache-2.0).
+**Apache-2.0** · [`github.com/valguard-ai/valguard`](https://github.com/valguard-ai/valguard)
 
-## Monorepo development
+Offline, deterministic **output** validation for LLM agents: ~**40 MVP rules**, same rule IDs as ValGuard production, with no network calls in `check`, `test`, or `report`.
 
-**Branch:** `feature/oss-phase-c-prep` (supersedes `feature/oss-valguard-full-implementation` for integration with current `master`).
+Hosted proxy, re-ask, repair, input validators, and the full ~160-rule catalog remain on [ValGuard Cloud](https://www.valguard.ai).
 
-| Artifact | Path |
-|----------|------|
-| Offline CLI | `apps/proxy/cmd/valguard` — `make oss-valguard-build` |
-| Conformance | `make oss-conformance-test` |
-| Fixtures | `conformance/fixtures/` |
-| Runbook | [docs/opensource-cli-phase-c.md](../../docs/opensource-cli-phase-c.md) |
+## Install (after v0.1.0 release)
 
-This directory is the **C1 skeleton** for the future public repo: module metadata, LICENSE, CI workflow template, and standalone `pkg/evidence` (no proxy import).
+```bash
+# Go
+go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.0
 
-During Phase C the CLI still builds from **`apps/proxy`** and uses `replace github.com/valguard-ai/valguard/apps/proxy => ../../apps/proxy` in `go.mod` until validators/engine are extracted here (C2–C4, C9).
+# Or download from GitHub Releases (linux/darwin/windows)
+```
 
-Docs: [policy YAML v1](../../docs/oss/policy-yaml-v1.md), [gate 0 decisions](../../docs/decisions/oss-cli-v1.md).
+PyPI package name: **`valguard-cli`** (not `valguard` on PyPI).
+
+## Quickstart
+
+```bash
+valguard init --path valguard.yaml
+valguard check --policy valguard.yaml --output '{"message":"ok"}'
+valguard test --dir conformance/fixtures
+valguard rules list
+valguard rules explain valid_format
+valguard report --shadow --policy valguard.yaml --output out.json
+valguard export --policy valguard.yaml
+valguard verify-proof -- evidence.json
+```
+
+Policy format: YAML v1 (`version`, `name`, `mode`, `rules[]`; `on_fail`: `block` | `warn` | `log`; no `reask`).
+
+## Local vs hosted CI
+
+| | `valguard test` (OSS) | Host `valguard-cli test` |
+|---|------------------------|---------------------------|
+| Policy | `valguard.yaml` | Agent in DB (`agent_slug`) |
+| Network | **None** | Yes (internal API) |
+| Rules | 40 MVP output rules | Full catalog + input path |
+
+## Development (monorepo)
+
+This tree is synced from the ValGuard GitLab monorepo (`oss/valguard/`). Gate:
+
+```bash
+make oss-phase-c-gate          # from repo root
+make oss-sync-conformance-fixtures
+```
+
+Public release binaries are built with `-tags=osspublic` (40 rules). Monorepo builds include the full catalog for proxy parity.
+
+## Telemetry
+
+The OSS CLI does **not** phone home. CI asserts no `net/http` dependency in `cmd/valguard`.
+
+## License
+
+Apache-2.0 — see [LICENSE](./LICENSE).
