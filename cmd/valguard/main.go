@@ -49,7 +49,7 @@ func main() {
 }
 
 func printUsage() {
-	fmt.Println(`valguard — local offline validation (OSS, monorepo build)
+	fmt.Println(`valguard — offline validation CLI (40 MVP rules)
 
   valguard init [--path valguard.yaml]
   valguard check [--policy valguard.yaml] (--file PATH | --output TEXT | stdin)
@@ -61,7 +61,9 @@ func printUsage() {
   valguard rules list
   valguard rules explain <rule-id> [--json]
 
-No network in check/test/report/export. Hosted CI: valguard-cli test (see docs/oss/policy-yaml-v1.md).`)
+No network in check/test/report/export/verify-proof.
+Hosted network CI uses a separate helper (valguard-cli) against agent_slug — not this binary.
+Policy YAML v1: version, name, mode, rules[] (on_fail: block|warn|log).`)
 }
 
 func runInit(args []string) int {

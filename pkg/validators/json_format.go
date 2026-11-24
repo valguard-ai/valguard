@@ -12,6 +12,13 @@ func ValidateJSONString(s string) error {
 	if err := validateJSONFast(s); err == nil {
 		return nil
 	}
+	normalized := NormalizeJSONDocumentForValidation(s)
+	if normalized != s {
+		if err := validateJSONFast(normalized); err == nil {
+			return nil
+		}
+		s = normalized
+	}
 	var v any
 	return gojson.Unmarshal([]byte(s), &v)
 }
@@ -30,7 +37,7 @@ func validateJSONFormatCtx(ctx context.Context, output string) error {
 	if lazy := LazyOutputFrom(ctx); lazy != "" {
 		trim = lazy
 	} else {
-		trim = UnwrapOneCodeFence(trim)
+		trim = NormalizeJSONDocumentForValidation(trim)
 	}
 	return ValidateJSONString(trim)
 }
