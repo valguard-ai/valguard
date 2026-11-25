@@ -8,27 +8,23 @@ Hosted proxy, re-ask, repair, input validators, and the full ~160-rule catalog r
 
 Requires **Go 1.26+** to build from source (`go 1.26.0` in `go.mod`).
 
-## Install
-
-> **Launch note:** `go install …@v0.1.2`, GitHub Release archives, Homebrew, and `pip install valguard-cli` work only after the public repo and tag **v0.1.2** exist. Until then, build from this tree (`go build -o valguard ./cmd/valguard`) or from the ValGuard monorepo (`make oss-valguard-build`).
+## Install (pick one)
 
 ```bash
-# Go module (after v0.1.2 is published)
-go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.2
+# Linux / macOS — no Go required (checksum-verified release binary)
+curl -fsSL https://raw.githubusercontent.com/valguard-ai/valguard/main/scripts/install.sh | bash
 
-# Or download a GoReleaser archive from GitHub Releases
-#   valguard_0.1.2_<os>_<arch>.tar.gz  (linux/darwin/windows; amd64/arm64; no windows/arm64)
+# macOS — Homebrew
+brew install valguard-ai/tap/valguard
 
-# Homebrew (after valguard-ai/homebrew-tap is published)
-#   brew tap valguard-ai/tap && brew install valguard
+# Python — downloads the same release binary on first run
+pip install valguard-cli
 
-# PyPI wrapper downloads the same release binary (console script still named valguard)
-#   pip install valguard-cli
+# Go 1.26+
+go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.3
 ```
 
-PyPI package name: **`valguard-cli`** (not `valguard` on PyPI — that name is an unrelated project).
-
-See [INSTALL.md](./INSTALL.md) for platform details and [SECURITY.md](./SECURITY.md) for vulnerability reporting.
+PyPI: **`valguard-cli`** only (not `valguard`). Details: [INSTALL.md](./INSTALL.md).
 
 ## Quickstart
 
@@ -42,7 +38,7 @@ valguard rules explain valid_format
 valguard report --shadow --policy valguard.yaml --file runs.jsonl
 valguard export --policy valguard.yaml --out playbook.json
 valguard verify-proof --file envelope.json
-valguard version   # 0.1.2
+valguard version   # 0.1.3
 ```
 
 Policy format: YAML v1 (`version`, `name`, `mode`, `rules[]`; `on_fail`: `block` | `warn` | `log`; no `reask`).

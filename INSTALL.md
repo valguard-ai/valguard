@@ -1,70 +1,60 @@
 # Install ValGuard CLI (`valguard`)
 
-Module path: `github.com/valguard-ai/valguard`  
-Binary name: **`valguard`**  
-Semver: **0.1.2** (git tag `v0.1.2`)  
-Go toolchain to build from source: **1.26+**
+Binary: **`valguard`** · module `github.com/valguard-ai/valguard` · release **`v0.1.3`**
 
-> Until `https://github.com/valguard-ai/valguard` is public and the `v0.1.2` release
-> exists, the install commands below will fail. Build locally instead:
->
-> ```bash
-> go build -o valguard ./cmd/valguard
-> ./valguard version
-> ```
+Pick **one** command for your machine.
 
-## go install
+## Linux or macOS (recommended)
+
+No Go or Python required. Verifies the release archive against `checksums.txt` and installs to `~/.local/bin`.
 
 ```bash
-go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.2
+curl -fsSL https://raw.githubusercontent.com/valguard-ai/valguard/main/scripts/install.sh | bash
 valguard version
 ```
 
-## GitHub Release archives
-
-GoReleaser publishes (when the tag is pushed):
-
-- `valguard_0.1.2_linux_amd64.tar.gz` / `.zip`
-- `valguard_0.1.2_linux_arm64.tar.gz` / `.zip`
-- `valguard_0.1.2_darwin_amd64.tar.gz` / `.zip`
-- `valguard_0.1.2_darwin_arm64.tar.gz` / `.zip`
-- `valguard_0.1.2_windows_amd64.tar.gz` / `.zip`
-- `checksums.txt`
-
-Windows arm64 is **not** built. Extract and place `valguard` (or `valguard.exe`) on your `PATH`.
+Override install dir or version:
 
 ```bash
-curl -fsSL "https://github.com/valguard-ai/valguard/releases/download/v0.1.2/valguard_0.1.2_linux_amd64.tar.gz" | tar -xz
-./valguard version
+VALGUARD_INSTALL_DIR=/usr/local/bin VALGUARD_VERSION=v0.1.3 \
+  curl -fsSL https://raw.githubusercontent.com/valguard-ai/valguard/main/scripts/install.sh | bash
 ```
 
-## Homebrew
-
-After `valguard-ai/homebrew-tap` is published:
+## macOS (Homebrew)
 
 ```bash
-brew tap valguard-ai/tap
-brew install valguard
+brew install valguard-ai/tap/valguard
+valguard version
 ```
 
-## PyPI (`valguard-cli`)
+## Python (any OS with pip)
+
+Package name **`valguard-cli`**, command still **`valguard`**. First run downloads and verifies the release binary.
 
 ```bash
 pip install valguard-cli
 valguard version
 ```
 
-The package name is **`valguard-cli`**; the console script is still **`valguard`**. On first run it downloads the matching GitHub Release archive (override with `VALGUARD_BIN` or `VALGUARD_VERSION`). Windows zip extract in the wrapper is not implemented — use `go install` or a release archive on Windows.
+Do **not** `pip install valguard` — unrelated project.
 
-Do **not** `pip install valguard` for this CLI; that PyPI name is an unrelated project.
+## Go developers
+
+Requires Go **1.26+**.
+
+```bash
+go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.3
+```
+
+## Manual download
+
+Archives and `checksums.txt` on [GitHub Releases](https://github.com/valguard-ai/valguard/releases) (`linux` / `darwin` / `windows`, `amd64` and `arm64`; no `windows/arm64`).
 
 ## GitHub Action
 
 ```yaml
-- uses: valguard-ai/valguard/action@v0.1.2
+- uses: valguard-ai/valguard/action@v0.1.3
   with:
     policy-file: valguard.yaml
     output-file: model-output.json
 ```
-
-Downloads the release binary and runs `valguard check`.

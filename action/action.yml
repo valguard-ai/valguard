@@ -6,9 +6,9 @@ branding:
 
 inputs:
   version:
-    description: ValGuard release tag (e.g. v0.1.2)
+    description: ValGuard release tag (e.g. v0.1.3)
     required: false
-    default: v0.1.2
+    default: v0.1.3
   policy-file:
     description: Path to valguard.yaml policy file
     required: true
