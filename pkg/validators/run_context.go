@@ -16,7 +16,9 @@ func AttachRunLite(ctx context.Context, m RunMeta, output string) context.Contex
 		ctx = context.WithValue(ctx, MetaContextKey, m)
 	}
 	if output != "" {
-		trimmed := UnwrapOneCodeFence(strings.TrimSpace(output))
+		// Same extraction as valid_format and ParseShallowFields so lazy and direct
+		// paths never disagree on which JSON document rules see.
+		trimmed := NormalizeJSONDocumentForValidation(strings.TrimSpace(output))
 		ctx = context.WithValue(ctx, LazyOutputContextKey, trimmed)
 	}
 	return ctx

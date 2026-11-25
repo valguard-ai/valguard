@@ -2,7 +2,6 @@ package validators
 
 import (
 	"context"
-	"strings"
 
 	gojson "github.com/goccy/go-json"
 )
@@ -33,11 +32,11 @@ func ParseJSONDocument(raw string) (any, error) {
 }
 
 func validateJSONFormatCtx(ctx context.Context, output string) error {
-	trim := strings.TrimSpace(output)
-	if lazy := LazyOutputFrom(ctx); lazy != "" {
-		trim = lazy
-	} else {
-		trim = NormalizeJSONDocumentForValidation(trim)
+	trim := LazyOutputFrom(ctx)
+	if trim == "" {
+		trim = output
 	}
+	// Align with ParseShallowFields: one extracted document for all JSON-shape rules.
+	trim = NormalizeJSONDocumentForValidation(trim)
 	return ValidateJSONString(trim)
 }

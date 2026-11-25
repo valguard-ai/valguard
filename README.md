@@ -10,14 +10,14 @@ Requires **Go 1.26+** to build from source (`go 1.26.0` in `go.mod`).
 
 ## Install
 
-> **Launch note:** `go install …@v0.1.1`, GitHub Release archives, Homebrew, and `pip install valguard-cli` work only after the public repo and tag **v0.1.1** exist. Until then, build from this tree (`go build -o valguard ./cmd/valguard`) or from the ValGuard monorepo (`make oss-valguard-build`).
+> **Launch note:** `go install …@v0.1.2`, GitHub Release archives, Homebrew, and `pip install valguard-cli` work only after the public repo and tag **v0.1.2** exist. Until then, build from this tree (`go build -o valguard ./cmd/valguard`) or from the ValGuard monorepo (`make oss-valguard-build`).
 
 ```bash
-# Go module (after v0.1.1 is published)
-go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.1
+# Go module (after v0.1.2 is published)
+go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.2
 
 # Or download a GoReleaser archive from GitHub Releases
-#   valguard_0.1.1_<os>_<arch>.tar.gz  (linux/darwin/windows; amd64/arm64; no windows/arm64)
+#   valguard_0.1.2_<os>_<arch>.tar.gz  (linux/darwin/windows; amd64/arm64; no windows/arm64)
 
 # Homebrew (after valguard-ai/homebrew-tap is published)
 #   brew tap valguard-ai/tap && brew install valguard
@@ -42,7 +42,7 @@ valguard rules explain valid_format
 valguard report --shadow --policy valguard.yaml --file runs.jsonl
 valguard export --policy valguard.yaml --out playbook.json
 valguard verify-proof --file envelope.json
-valguard version   # 0.1.1
+valguard version   # 0.1.2
 ```
 
 Policy format: YAML v1 (`version`, `name`, `mode`, `rules[]`; `on_fail`: `block` | `warn` | `log`; no `reask`).

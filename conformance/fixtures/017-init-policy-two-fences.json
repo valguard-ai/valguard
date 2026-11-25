@@ -1,0 +1,29 @@
+{
+  "name": "init policy uses first JSON fence when multiple fences present",
+  "policy": {
+    "version": 1,
+    "name": "init_sample",
+    "mode": "enforce",
+    "rules": [
+      {
+        "id": "valid_format",
+        "params": {
+          "format": "json"
+        },
+        "on_fail": "block"
+      },
+      {
+        "id": "required_fields",
+        "params": {
+          "fields": ["message"]
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "```json\n{\"message\":\"ok\"}\n```\nand\n```json\n{\"x\":1}\n```",
+  "input_text": "",
+  "expect_blocked": false,
+  "expect_would_enforce": false,
+  "expect_failed_rules": []
+}

@@ -23,8 +23,10 @@ func parseShallowWithDupsCtx(ctx context.Context, output string) (map[string]Sha
 }
 
 func trimmedOutputCtx(ctx context.Context, output string) string {
-	if lazy := LazyOutputFrom(ctx); lazy != "" {
-		return lazy
+	trim := LazyOutputFrom(ctx)
+	if trim == "" {
+		trim = output
 	}
-	return UnwrapOneCodeFence(strings.TrimSpace(output))
+	// Same document extraction as valid_format / ParseShallowFields for JSON-shape rules.
+	return NormalizeJSONDocumentForValidation(trim)
 }

@@ -1,0 +1,29 @@
+{
+  "name": "init policy accepts preamble + JSON fence (valid_format + required_fields)",
+  "policy": {
+    "version": 1,
+    "name": "init_sample",
+    "mode": "enforce",
+    "rules": [
+      {
+        "id": "valid_format",
+        "params": {
+          "format": "json"
+        },
+        "on_fail": "block"
+      },
+      {
+        "id": "required_fields",
+        "params": {
+          "fields": ["message"]
+        },
+        "on_fail": "block"
+      }
+    ]
+  },
+  "output": "Sure.\n```json\n{\"message\":\"ok\"}\n```\nThanks.",
+  "input_text": "",
+  "expect_blocked": false,
+  "expect_would_enforce": false,
+  "expect_failed_rules": []
+}

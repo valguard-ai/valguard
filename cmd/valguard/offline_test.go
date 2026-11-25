@@ -70,6 +70,52 @@ func TestValguardCLI_offlineSmoke(t *testing.T) {
 	run("rules", "list")
 }
 
+// Init-sample policy must accept the same extracted JSON as valid_format after preamble/fence.
+func TestValguardCLI_initPolicyPreambleJSON(t *testing.T) {
+	bin := buildValguard(t)
+	modRoot := moduleRoot(t)
+	tmp := t.TempDir()
+	policyPath := filepath.Join(tmp, "valguard.yaml")
+	if err := os.WriteFile(policyPath, []byte(osspolicy.SampleYAML), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	env := append(os.Environ(),
+		"HTTP_PROXY=http://127.0.0.1:1",
+		"HTTPS_PROXY=http://127.0.0.1:1",
+		"ALL_PROXY=http://127.0.0.1:1",
+	)
+
+	check := func(wantExit int, output string) {
+		t.Helper()
+		cmd := exec.Command(bin, "check", "--json", "--policy", policyPath, "--output", output)
+		cmd.Env = env
+		cmd.Dir = modRoot
+		out, err := cmd.CombinedOutput()
+		gotExit := 0
+		if err != nil {
+			if ee, ok := err.(*exec.ExitError); ok {
+				gotExit = ee.ExitCode()
+			} else {
+				t.Fatalf("check: %v\n%s", err, out)
+			}
+		}
+		if gotExit != wantExit {
+			t.Fatalf("exit=%d want=%d\n%s", gotExit, wantExit, out)
+		}
+	}
+
+	check(0, "Sure.\n```json\n{\"message\":\"ok\"}\n```\nThanks.")
+	check(0, `Sure. {"message":"ok"} Thanks.`)
+	check(0, `{"message":"ok"} — done`)
+	check(0, "```json\n{\"message\":\"ok\"}\n```")
+	check(0, "Here:\n```json\n{\"message\":\"ok\",\"meta\":{\"a\":[1,2]}}\n```")
+	check(0, "```json\n{\"message\":\"ok\"}\n```\nand\n```json\n{\"x\":1}\n```")
+	check(1, `{"foo":1}`)
+	check(1, "```json\n{\"foo\":1}\n```")
+	check(1, "Sure.\n```json\n{\"foo\":1}\n```")
+}
+
 func buildValguard(t *testing.T) string {
 	t.Helper()
 	modRoot := moduleRoot(t)

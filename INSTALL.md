@@ -2,10 +2,10 @@
 
 Module path: `github.com/valguard-ai/valguard`  
 Binary name: **`valguard`**  
-Semver: **0.1.1** (git tag `v0.1.1`)  
+Semver: **0.1.2** (git tag `v0.1.2`)  
 Go toolchain to build from source: **1.26+**
 
-> Until `https://github.com/valguard-ai/valguard` is public and the `v0.1.1` release
+> Until `https://github.com/valguard-ai/valguard` is public and the `v0.1.2` release
 > exists, the install commands below will fail. Build locally instead:
 >
 > ```bash
@@ -16,7 +16,7 @@ Go toolchain to build from source: **1.26+**
 ## go install
 
 ```bash
-go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.1
+go install github.com/valguard-ai/valguard/cmd/valguard@v0.1.2
 valguard version
 ```
 
@@ -24,17 +24,17 @@ valguard version
 
 GoReleaser publishes (when the tag is pushed):
 
-- `valguard_0.1.1_linux_amd64.tar.gz` / `.zip`
-- `valguard_0.1.1_linux_arm64.tar.gz` / `.zip`
-- `valguard_0.1.1_darwin_amd64.tar.gz` / `.zip`
-- `valguard_0.1.1_darwin_arm64.tar.gz` / `.zip`
-- `valguard_0.1.1_windows_amd64.tar.gz` / `.zip`
+- `valguard_0.1.2_linux_amd64.tar.gz` / `.zip`
+- `valguard_0.1.2_linux_arm64.tar.gz` / `.zip`
+- `valguard_0.1.2_darwin_amd64.tar.gz` / `.zip`
+- `valguard_0.1.2_darwin_arm64.tar.gz` / `.zip`
+- `valguard_0.1.2_windows_amd64.tar.gz` / `.zip`
 - `checksums.txt`
 
 Windows arm64 is **not** built. Extract and place `valguard` (or `valguard.exe`) on your `PATH`.
 
 ```bash
-curl -fsSL "https://github.com/valguard-ai/valguard/releases/download/v0.1.1/valguard_0.1.1_linux_amd64.tar.gz" | tar -xz
+curl -fsSL "https://github.com/valguard-ai/valguard/releases/download/v0.1.2/valguard_0.1.2_linux_amd64.tar.gz" | tar -xz
 ./valguard version
 ```
 
@@ -61,7 +61,7 @@ Do **not** `pip install valguard` for this CLI; that PyPI name is an unrelated p
 ## GitHub Action
 
 ```yaml
-- uses: valguard-ai/valguard/action@v0.1.1
+- uses: valguard-ai/valguard/action@v0.1.2
   with:
     policy-file: valguard.yaml
     output-file: model-output.json
